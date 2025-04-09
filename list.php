@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 $host = getenv('PGHOST') ?: 'localhost';
 $dbname = getenv('PGDATABASE') ?: 'railway';
 $user = getenv('PGUSER') ?: 'postgres';
-$password = getenv('PGPASSWORD') ?: '';
+$password = getenv('PGPASSWORD') ?: 'NBYeLnVnzvXbktTRLIlNPeUUMhFdaTDz';
 $port = getenv('PGPORT') ?: '5432'; // Default PostgreSQL port
 
 try {
