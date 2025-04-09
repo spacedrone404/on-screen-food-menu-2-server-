@@ -1,15 +1,33 @@
 ﻿<?php
 header('Content-Type: application/json');
 
-// Use environment variables from Railway
-$host = getenv('PGHOST') ?: 'postgres.railway.internal';
-$dbname = getenv('PGDATABASE') ?: 'railway';
-$user = getenv('PGUSER') ?: 'postgres';
-$password = getenv('PGPASSWORD') ?: 'NBYeLnVnzvXbktTRLIlNPeUUMhFdaTDz';
-$port = getenv('PGPORT') ?: '5432'; // Default PostgreSQL port
+// Add CORS headers for Vercel frontend
+header('Access-Control-Allow-Origin: *'); // Replace * with your Vercel domain in production
+header('Access-Control-Allow-Methods: GET, POST, DELETE');
+header('Access-Control-Allow-Headers: Content-Type');
+
+// Use environment variables from Railway (Private Network)
+$databaseUrl = getenv('DATABASE_URL'); // Provided by Railway for Postgres service
+
+if ($databaseUrl) {
+    // Parse DATABASE_URL (e.g., postgresql://postgres:PASSWORD@postgres.railway.internal:5432/railway)
+    $dbParams = parse_url($databaseUrl);
+    $host = $dbParams['host'] ?? 'postgres.railway.internal';
+    $port = $dbParams['port'] ?? '5432';
+    $dbname = ltrim($dbParams['path'], '/') ?? 'railway';
+    $user = $dbParams['user'] ?? 'postgres';
+    $password = $dbParams['pass'] ?? '';
+} else {
+    // Fallback for local testing
+    $host = getenv('PGHOST') ?: 'localhost';
+    $port = getenv('PGPORT') ?: '5432';
+    $dbname = getenv('PGDATABASE') ?: 'railway';
+    $user = getenv('PGUSER') ?: 'postgres';
+    $password = getenv('PGPASSWORD') ?: '';
+}
 
 try {
-    // Connect using Railway's dynamic credentials
+    // Connect using parsed credentials
     $dbh = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Better error handling
 
@@ -80,3 +98,4 @@ try {
     http_response_code(500); // Set proper HTTP status code for errors
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
+?>
