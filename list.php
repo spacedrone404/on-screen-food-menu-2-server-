@@ -1,14 +1,18 @@
 ﻿<?php
 header('Content-Type: application/json');
 
-$host = 'localhost'; 
-$dbname = 'menus';   
-$user = 'postgres';  
-$password = '';      
+// Use environment variables from Railway
+$host = getenv('PGHOST') ?: 'localhost';
+$dbname = getenv('PGDATABASE') ?: 'railway';
+$user = getenv('PGUSER') ?: 'postgres';
+$password = getenv('PGPASSWORD') ?: '';
+$port = getenv('PGPORT') ?: '5432'; // Default PostgreSQL port
 
 try {
-    $dbh = new PDO("pgsql:host=$host;dbname=$dbname", $user, $password);
-    
+    // Connect using Railway's dynamic credentials
+    $dbh = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Better error handling
+
     // Handle GET request (fetching data)
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['category'])) {
         $category = $_GET['category'];
@@ -73,6 +77,6 @@ try {
     }
     
 } catch (PDOException $e) {
+    http_response_code(500); // Set proper HTTP status code for errors
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }
-?>
