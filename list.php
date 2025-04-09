@@ -16,7 +16,7 @@ if ($databaseUrl) {
     $port = $dbParams['port'] ?? '5432';
     $dbname = ltrim($dbParams['path'], '/') ?? 'railway';
     $user = $dbParams['user'] ?? 'postgres';
-    $password = $dbParams['pass'] ?? '';
+    $password = $dbParams['pass'] ?? 'NBYeLnVnzvXbktTRLIlNPeUUMhFdaTDz';
 } else {
     // Fallback for local testing
     $host = getenv('PGHOST') ?: 'localhost';
