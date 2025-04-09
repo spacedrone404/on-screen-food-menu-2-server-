@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // Use environment variables from Railway
-$host = getenv('PGHOST') ?: 'localhost';
+$host = getenv('PGHOST') ?: 'postgres.railway.internal';
 $dbname = getenv('PGDATABASE') ?: 'railway';
 $user = getenv('PGUSER') ?: 'postgres';
 $password = getenv('PGPASSWORD') ?: 'NBYeLnVnzvXbktTRLIlNPeUUMhFdaTDz';
