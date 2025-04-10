@@ -14,14 +14,14 @@ if ($databaseUrl) {
     $dbParams = parse_url($databaseUrl);
     $host = $dbParams['host'] ?? 'postgres.railway.internal';
     $port = $dbParams['port'] ?? '5432';
-    $dbname = menus;
+    $dbname = 'menus';
     $user = $dbParams['user'] ?? 'postgres';
     $password = $dbParams['pass'] ?? 'NBYeLnVnzvXbktTRLIlNPeUUMhFdaTDz';
 } else {
     // Fallback for local testing
     $host = getenv('PGHOST') ?: 'localhost';
     $port = getenv('PGPORT') ?: '5432';
-    $dbname = menus;
+    $dbname = 'menus';
     $user = getenv('PGUSER') ?: 'postgres';
     $password = getenv('PGPASSWORD') ?: '';
 }
