@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // Add CORS headers for Vercel frontend
-header('Access-Control-Allow-Origin: *'); // Replace * with your Vercel domain in production
+header('Access-Control-Allow-Origin: https://on-screen-food-menu-2.vercel.app');
 header('Access-Control-Allow-Methods: GET, POST, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
 
@@ -14,14 +14,14 @@ if ($databaseUrl) {
     $dbParams = parse_url($databaseUrl);
     $host = $dbParams['host'] ?? 'postgres.railway.internal';
     $port = $dbParams['port'] ?? '5432';
-    $dbname = ltrim($dbParams['path'], '/') ?? 'railway';
+    $dbname = menus;
     $user = $dbParams['user'] ?? 'postgres';
     $password = $dbParams['pass'] ?? 'NBYeLnVnzvXbktTRLIlNPeUUMhFdaTDz';
 } else {
     // Fallback for local testing
     $host = getenv('PGHOST') ?: 'localhost';
     $port = getenv('PGPORT') ?: '5432';
-    $dbname = getenv('PGDATABASE') ?: 'railway';
+    $dbname = menus;
     $user = getenv('PGUSER') ?: 'postgres';
     $password = getenv('PGPASSWORD') ?: '';
 }
